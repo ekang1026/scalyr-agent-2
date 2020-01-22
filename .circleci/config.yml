@@ -3,6 +3,18 @@
 # Check https://circleci.com/docs/2.0/language-python/ for more details
 #
 version: 2
+commands:
+  unittest:
+    description: "A base command for all unittest jobs"
+    parameters:
+      python_version:
+        type: string
+    steps:
+      - run:
+          command: |
+            docker build . -t unittest_36 --build-arg PYTHON_VERSION=<< parameters.python_version >> -f .circleci/Dockerfile
+            docker run -it -v /home/circleci/scalyr-agent-2:/scalyr-agent-2 unittest
+
 jobs:
   new_unittest-36:
     working_directory: ~/scalyr-agent-2
@@ -11,24 +23,12 @@ jobs:
       docker_layer_caching: true
     steps:
       - checkout
-      - restore_cache:
-            key: base_images-{{ .Branch }}-{{ checksum ".circleci/Dockerfile" }}
-      - run:
-          command: |
-            mkdir -p base_images
-            if [ -f "base_images/unittest.tgz" ]; then
-              echo "$file found."
-              docker load -i base_images/unittest.tgz
-            else
-              echo "$file not found."
-              docker build . -t unittest_36 --build-arg PYTHON_VERSION=3.6.10 -f .circleci/Dockerfile
-              docker save unittest_36 > base_images/unittest.tgz
-            fi
-            docker run -it -v /home/circleci/scalyr-agent-2:/scalyr-agent-2 -e PYTHON_VERSION=3.6.10 unittest_36
-      - save_cache:
-          key: base_images-{{ .Branch }}-{{ checksum ".circleci/Dockerfile" }}
-          paths:
-            - "base_images"
+      - unittest:
+          python_version: "3.6.8"
+#      - run:
+#          command: |
+#            #docker build . -t unittest_36 --build-arg PYTHON_VERSION=3.6.10 -f .circleci/Dockerfile
+#            #docker run -it -v /home/circleci/scalyr-agent-2:/scalyr-agent-2 -e PYTHON_VERSION=3.6.10 unittest_36
 
   test:
     working_directory: ~/scalyr-agent-2

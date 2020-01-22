@@ -26,6 +26,8 @@ RUN source ~/.bashrc && pyenv shell $PYTHON_VERSION && pyenv version && pip inst
 
 FROM centos
 
+ARG PYTHON_VERSION
+
 RUN useradd -ms /bin/bash scalyr \
 && echo "scalyr:scalyr" | chpasswd \
 && usermod -aG wheel scalyr \
@@ -39,4 +41,7 @@ WORKDIR /home/scalyr
 
 VOLUME ["/scalyr-agent-2"]
 
-CMD source ~/.bashrc && pyenv shell $PYTHON_VERSION && pyenv version && python /scalyr-agent-2/run_tests.py
+ENV PYTHON_VERSION=$PYTHON_VERSION
+
+
+ENTRYPOINT source ~/.bashrc && pyenv shell $PYTHON_VERSION && pyenv version && python /scalyr-agent-2/run_tests.py
