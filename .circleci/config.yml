@@ -22,6 +22,20 @@ commands:
             docker run -it -v /home/circleci/scalyr-agent-2:/scalyr-agent-2 unittest
 
 jobs:
+  new_unittest-38:
+    working_directory: ~/scalyr-agent-2
+    executor: unittest_executor
+    steps:
+      - unittest_command:
+          python_version: "3.8.1"
+
+  new_unittest-37:
+    working_directory: ~/scalyr-agent-2
+    executor: unittest_executor
+    steps:
+      - unittest_command:
+          python_version: "3.7.6"
+
   new_unittest-36:
     working_directory: ~/scalyr-agent-2
     executor: unittest_executor
@@ -29,21 +43,43 @@ jobs:
       - unittest_command:
           python_version: "3.6.8"
 
-  test:
+  new_unittest-35:
     working_directory: ~/scalyr-agent-2
-    docker:
-      - image: circleci/python:3.6-jessie-browsers
+    executor: unittest_executor
     steps:
-      - checkout
-      - run:
-          command: |
-            mkdir -p base_image
-            touch base_image/test.txt
-            if [ -f "base_image/test.txt" ]; then
-              echo "$file found."
-            else
-              echo "$file not found."
-            fi
+      - unittest_command:
+          python_version: "3.5.9"
+
+  new_unittest-34:
+    working_directory: ~/scalyr-agent-2
+    executor: unittest_executor
+    steps:
+      - unittest_command:
+          python_version: "3.4.10"
+
+  new_unittest-33:
+    working_directory: ~/scalyr-agent-2
+    executor: unittest_executor
+    steps:
+      - unittest_command:
+          python_version: "3.3.7"
+
+  new_unittest-27:
+    working_directory: ~/scalyr-agent-2
+    executor: unittest_executor
+    steps:
+      - unittest_command:
+          python_version: "2.7.17"
+
+  new_unittest-26:
+    working_directory: ~/scalyr-agent-2
+    executor: unittest_executor
+    steps:
+      - unittest_command:
+          python_version: "2.6.9"
+
+
+
   unittest-36:
     working_directory: ~/scalyr-agent-2
     docker:
