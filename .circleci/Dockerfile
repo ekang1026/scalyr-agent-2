@@ -1,4 +1,4 @@
-FROM centos
+FROM centos as base
 
 ARG PYTHON_VERSION
 
@@ -23,8 +23,20 @@ RUN . ~/.bashrc && pyenv install $PYTHON_VERSION
 
 RUN source ~/.bashrc && pyenv shell $PYTHON_VERSION && pyenv version && pip install mock ujson docker-py==1.10.3
 
+
+FROM centos
+
+RUN useradd -ms /bin/bash scalyr \
+&& echo "scalyr:scalyr" | chpasswd \
+&& usermod -aG wheel scalyr \
+&& echo "scalyr ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+COPY --from=base /home/scalyr/.pyenv /home/scalyr/.pyenv
+COPY --from=base /home/scalyr/.bashrc /home/scalyr/.bashrc
+
+USER scalyr
+WORKDIR /home/scalyr
+
 VOLUME ["/scalyr-agent-2"]
 
-
-
-CMD ls ~/.. && source ~/.bashrc && pyenv shell $PYTHON_VERSION && pyenv version && python /scalyr-agent-2/run_tests.py
+CMD source ~/.bashrc && pyenv shell $PYTHON_VERSION && pyenv version && python /scalyr-agent-2/run_tests.py
