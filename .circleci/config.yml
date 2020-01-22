@@ -3,32 +3,31 @@
 # Check https://circleci.com/docs/2.0/language-python/ for more details
 #
 version: 2.1
+executors:
+  unittest_executor:
+    machine:
+      image: ubuntu-1604:201903-01
+      docker_layer_caching: true
 commands:
-  unittest:
+  unittest_command:
     description: "A base command for all unittest jobs"
     parameters:
       python_version:
         type: string
     steps:
+      - checkout
       - run:
           command: |
-            docker build . -t unittest_36 --build-arg PYTHON_VERSION=<< parameters.python_version >> -f .circleci/Dockerfile
+            docker build . -t unittest --build-arg PYTHON_VERSION=<< parameters.python_version >> -f .circleci/Dockerfile
             docker run -it -v /home/circleci/scalyr-agent-2:/scalyr-agent-2 unittest
 
 jobs:
   new_unittest-36:
     working_directory: ~/scalyr-agent-2
-    machine:
-      image: ubuntu-1604:201903-01
-      docker_layer_caching: true
+    executor: unittest_executor
     steps:
-      - checkout
-      - unittest:
+      - unittest_command:
           python_version: "3.6.8"
-#      - run:
-#          command: |
-#            #docker build . -t unittest_36 --build-arg PYTHON_VERSION=3.6.10 -f .circleci/Dockerfile
-#            #docker run -it -v /home/circleci/scalyr-agent-2:/scalyr-agent-2 -e PYTHON_VERSION=3.6.10 unittest_36
 
   test:
     working_directory: ~/scalyr-agent-2
