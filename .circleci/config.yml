@@ -22,11 +22,11 @@ jobs:
             else
               echo "$file not found."
               docker build . -t unittest_36 --build-arg PYTHON_VERSION=3.6.10 -f .circleci/Dockerfile
-              docker save > base_images/unittest.tgz
+              docker save unittest_36 > base_images/unittest.tgz
             fi
             docker run -it -v /home/circleci/scalyr-agent-2:/scalyr-agent-2 -e PYTHON_VERSION=3.6.10 unittest_36
       - save_cache:
-          key: base_images-{{ .Branch }}-{{ checksum "dev-requirements.txt" }}
+          key: base_images-{{ .Branch }}-{{ checksum ".circleci/Dockerfile" }}
           paths:
             - "base_images"
 
@@ -38,8 +38,9 @@ jobs:
       - checkout
       - run:
           command: |
-            touch test.txt
-            if [ -f "test.txt" ]; then
+            mkdir -p base_image
+            touch base_image/test.txt
+            if [ -f "base_image/test.txt" ]; then
               echo "$file found."
             else
               echo "$file not found."
