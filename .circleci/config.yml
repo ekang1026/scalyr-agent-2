@@ -474,8 +474,15 @@ workflows:
   version: 2
   unittest:
     jobs:
-      - new_unittest-36
       - modernize-check
+      - new_unittest-38
+      - new_unittest-37
+      - new_unittest-36
+      - new_unittest-35
+      - new_unittest-34
+      - new_unittest-33
+      - new_unittest-27
+      - new_unittest-26
       - unittest-36
       - unittest-27
       - unittest-26
