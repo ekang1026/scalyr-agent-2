@@ -12,7 +12,7 @@ jobs:
       - checkout
       - run:
           command: |
-            docker build . -t unittest_36 --build-args PYTHON_VERSION=3.6.10 -f .circleci/Dockerfile
+            docker build . -t unittest_36 --build-arg PYTHON_VERSION=3.6.10 -f .circleci/Dockerfile
              docker run -it -v /home/circleci/scalyr-agent-2:/scalyr-agent-2 -e PYTHON_VERSION=3.6.10 unittest_36
 
   unittest-36:
