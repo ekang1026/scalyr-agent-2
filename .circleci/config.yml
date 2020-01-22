@@ -4,6 +4,17 @@
 #
 version: 2
 jobs:
+  new_unittest-36:
+    working_directory: ~/scalyr-agent-2
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+      - run:
+          command: |
+            docker build . -t unittest_36 --build-args PYTHON_VERSION=3.6.10 -f .circleci/Dockerfile
+             docker run -it -v /home/circleci/scalyr-agent-2:/scalyr-agent-2 -e PYTHON_VERSION=3.6.10 unittest_36
+
   unittest-36:
     working_directory: ~/scalyr-agent-2
     docker:
