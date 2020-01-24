@@ -565,7 +565,7 @@ class ScalyrClientSession(object):
             return add_events_request.get_payload()
 
         return self.__send_request(
-            six.ensure_str("/addEvents"),
+            "/addEvents",
             body_func=generate_body,
             block_on_response=block_on_response,
         )
