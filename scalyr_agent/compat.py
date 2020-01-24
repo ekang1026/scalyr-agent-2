@@ -96,7 +96,7 @@ if six.PY2:
             return self._iterable_elements_to_unicode_generator(six.iterkeys(os.environ))
 
         def keys(self):
-            return self._iterable_elements_to_unicode_generator(list(os.environ.keys()))
+            return list(self._iterable_elements_to_unicode_generator(os.environ.keys()))
 
         def itervalues(self):
             return self._iterable_elements_to_unicode_generator(six.itervalues(os.environ))
