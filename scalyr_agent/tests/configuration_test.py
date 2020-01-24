@@ -58,7 +58,7 @@ class TestConfigurationBase(ScalyrTestCase):
         self._config_file = os.path.join(self._config_dir, "agent.json")
         self._config_fragments_dir = os.path.join(self._config_dir, "agent.d")
         os.makedirs(self._config_fragments_dir)
-        for key in os_environ_unicode:
+        for key in os_environ_unicode.keys():
             if "scalyr" in key.lower():
                 del os.environ[key]
 
