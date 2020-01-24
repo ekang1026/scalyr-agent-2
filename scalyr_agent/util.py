@@ -1618,7 +1618,7 @@ class RedirectorClient(StoppableThread):
 
         @type deadline: float
         @type last_loop_time: float
-        @type description: str
+        @type description: six.text_type
         """
         current_time = self.__time()
         poll_deadline = RedirectorClient.BUSY_LOOP_POLL_INTERVAL + last_loop_time

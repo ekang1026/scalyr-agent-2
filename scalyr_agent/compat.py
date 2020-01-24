@@ -105,7 +105,7 @@ if six.PY2:
             return self._iterable_elements_to_unicode_generator(list(os.environ.values()))
 
         def __iter__(self):
-            return self.iterkeys()
+            return self.keys()
 
     def os_getenv_unicode(name, default=None):
         """The same logic as in os.environ, but with None check."""
